@@ -16,7 +16,6 @@ public class ProductIdRange
 
   public string GetPrefix()
   {
-
     StringBuilder builder = new();
     for (int i = 0; i < Min.Length; i++)
     {
@@ -28,39 +27,48 @@ public class ProductIdRange
     return builder.ToString();
   }
 
-  public static bool IsValidIdSimple(string id)
+  private static bool IsRepeatedPattern(string id, int patternLength)
   {
-    var first = id.Substring(0, id.Length / 2);
-    var second = id.Substring(id.Length / 2);
-    // Console.WriteLine($"first: {first} second: {second}");
-    return !(first == second);
+    string pattern = id.Substring(0, patternLength);
+    
+    for (int i = patternLength; i < id.Length; i += patternLength)
+    {
+      string chunk = id.Substring(i, patternLength);
+      if (chunk != pattern)
+      {
+        return false;
+      }
+    }
+    
+    return true;
   }
-  public static bool IsValidId(string id)
+
+  private static IEnumerable<int> GetPossiblePatternLengths(string id)
   {
-    var length = id.Length;
+    int length = id.Length;
+    
     for (int patternLength = 1; patternLength <= length / 2; patternLength++)
     {
       if (length % patternLength == 0)
       {
-        string pattern = id.Substring(0, patternLength);
-        bool isRepeated = true;
-
-        for (int i = patternLength; i < length; i += patternLength)
-        {
-          if (id.Substring(i, patternLength) != pattern)
-          {
-            isRepeated = false;
-            break;
-          }
-        }
-        if (isRepeated)
-        {
-          return false;
-        }
+        yield return patternLength;
       }
     }
+  }
+
+  public static bool IsValidId(string id)
+  {
+    foreach (int patternLength in GetPossiblePatternLengths(id))
+    {
+      if (IsRepeatedPattern(id, patternLength))
+      {
+        return false;
+      }
+    }
+    
     return true;
   }
+
   public List<string> FindInvalidIDs()
   {
     Console.WriteLine($"Min: {Min} Max: {Max}");
@@ -78,15 +86,12 @@ public class ProductIdRange
     foreach (var i in Enumerable.Range(tempMin, tempMax - tempMin + 1))
     {
       var id = $"{prefix}{i}";
-      // Console.WriteLine($"Checking valid id: {id}");
       if (!IsValidId(id))
       {
-        // Console.WriteLine($"id is not valid: {id}");
         invalidIDs.Add(id);
       }
     }
 
-    // Console.WriteLine($"Invalid Count: {invalidIDs.Count()}");
     return invalidIDs;
   }
 }
