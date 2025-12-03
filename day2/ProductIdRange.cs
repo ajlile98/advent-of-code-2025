@@ -38,7 +38,7 @@ public class ProductIdRange
   public static bool IsValidId(string id)
   {
     var length = id.Length;
-    for (int patternLength = 1; patternLength < length / 2; patternLength++)
+    for (int patternLength = 1; patternLength <= length / 2; patternLength++)
     {
       if (length % patternLength == 0)
       {
