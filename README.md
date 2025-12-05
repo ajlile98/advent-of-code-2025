@@ -46,14 +46,18 @@ dotnet build
 | Day | Part 1 | Part 2 | Notes |
 |-----|--------|--------|-------|
 | [Day 1](./day1) | ⭐ | ⭐ | Optimized dial rotation with O(1) algorithm |
-| Day 2 | | | |
-| Day 3 | | | |
+| [Day 2](./day2) | ⭐ | ⭐ | Product ID range validation |
+| [Day 3](./day3) | ⭐ | ⭐ | Bank transaction processing |
+| [Day 4](./day4) | ⭐ | ⭐ | Paper roll storage accessibility check |
 | ... | | | |
 
 ## Highlights
 
 ### Day 1: Dial Rotation Optimization
 Initially implemented with O(n) iteration, then optimized to O(1) using mathematical calculation of zero crossings. See [Dial.cs](./day1/Dial.cs) for the optimized solution using modular arithmetic.
+
+### Day 4: Paper Roll Accessibility
+Implemented a grid-based algorithm to count accessible paper rolls based on adjacent neighbor conditions. A roll is accessible if it has fewer than 4 rolls in the 8 surrounding positions (cardinal + diagonal directions).
 
 ---
 
